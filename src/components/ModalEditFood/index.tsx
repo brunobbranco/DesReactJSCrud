@@ -1,4 +1,4 @@
-import React, { useRef, useCallback } from 'react';
+import React, { useRef, useCallback, useEffect } from 'react';
 
 import { FiCheckSquare } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
@@ -39,7 +39,22 @@ const ModalEditFood: React.FC<IModalProps> = ({
 
   const handleSubmit = useCallback(
     async (data: IEditFoodData) => {
-      // EDIT A FOOD PLATE AND CLOSE THE MODAL
+      try {
+        formRef.current?.setErrors({});
+
+        const { image, name, price, description } = data;
+
+        const formData = {
+          image,
+          name,
+          price,
+          description,
+        };
+        handleUpdateFood(formData);
+        setIsOpen();
+      } catch (err) {
+        formRef.current?.setErrors(err);
+      }
     },
     [handleUpdateFood, setIsOpen],
   );
